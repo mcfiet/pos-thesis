@@ -1,0 +1,31 @@
+# .gitignore für LaTeX-Projekte
+
+# LaTeX-Ausgabedateien
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.gz
+*.fls
+*.fdb_latexmk
+
+# Zwischenablage-Dateien
+*~ 
+# Erstellte Hilfsdateien
+*.synctex.gz
+
+# Kompilierte PDFs und andere Dokumente
+*.pdf
+
+# Backup-Dateien
+*.bak
+*.swp
+
+# Editor-spezifische Dateien
+.vscode/
+.idea/
