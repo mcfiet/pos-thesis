@@ -21,7 +21,7 @@ Dies ist ein einfaches LaTeX-Dokument, das grundlegende Funktionen von LaTeX dem
 Falls du `pacman` verwendest, kannst du diese Pakete mit folgendem Befehl installieren:
 
 ```bash
-sudo pacman -S texlive-core texlive-science texlive-bin texlive-langextra texlive-fontsextra texlab zathura zathura-pdf-poppler texlive-latexmk texlive-lang texlive-bibtexextra texlive-xcolor
+sudo pacman -S texlive-core texlive-science texlive-bin texlive-langextra texlive-fontsextra texlab zathura zathura-pdf-poppler texlive-latexmk texlive-lang texlive-bibtexextra texlive-xcolor texlive-biblatex 
 ```
 
 ## Verwendung
