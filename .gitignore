@@ -1,31 +1,43 @@
-# .gitignore für LaTeX-Projekte
-
-# LaTeX-Ausgabedateien
-*.aux
-*.bbl
-*.blg
-*.dvi
+# Logs und Hilfsdateien
 *.log
+*.aux
 *.out
 *.toc
 *.lof
 *.lot
-*.gz
 *.fls
 *.fdb_latexmk
-
-# Zwischenablage-Dateien
-*~ 
-# Erstellte Hilfsdateien
 *.synctex.gz
-
-# Kompilierte PDFs und andere Dokumente
-*.pdf
-
-# Backup-Dateien
-*.bak
-*.swp
+*.bbl
+*.blg
+*.nav
+*.snm
 
 # Editor-spezifische Dateien
-.vscode/
-.idea/
+*~           # temporäre Dateien
+*.swp        # vim swap files
+*.bak        # Backup-Dateien
+*.tmp        # Temporäre Dateien
+
+# Kompilierte Dateien
+*.pdf        # Ausgabedokumente
+*.dvi        # DVI-Ausgaben
+*.ps         # Postscript-Dateien
+
+# Bibliografie-Zwischenprodukte
+*.bcf
+*.run.xml
+
+# IDE-spezifische Dateien
+.vscode/     # VS Code Projektkonfiguration
+.idea/       # IntelliJ/CLion/PhpStorm/WebStorm Projekte
+*.iml
+
+# Bilder
+*.jpg
+*.png
+*.pdf_tex    # Importierte LaTeX-Bilder-Dateien
+
+# Sonstige temporäre Verzeichnisse
+_build/
+build/
