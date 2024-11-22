@@ -1,6 +1,13 @@
 # Ein Beispiel LaTeX Dokument
 
 Dies ist ein einfaches LaTeX-Dokument, das grundlegende Funktionen von LaTeX demonstriert, wie etwa das Setzen von Textformatierungen, das Erstellen von mathematischen Formeln, das Erstellen von Listen, Tabellen und das Einfügen von Bildern.
+## Repository klonen
+
+Um dieses Repository zu klonen, führe folgenden Befehl in deinem Terminal aus:
+
+```bash
+git clone https://github.com/mcfiet/latex-example.git
+```
 
 ## Anforderungen
 
