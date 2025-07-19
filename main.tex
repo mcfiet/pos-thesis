@@ -1,10 +1,12 @@
-\documentclass[a4paper, 12pt]{report}
-\usepackage[ngerman]{babel}
-\usepackage{amsmath}  % Optional, für mathematische Formeln
-\usepackage[table,xcdraw]{xcolor}
-\usepackage{graphicx}
+\documentclass[a4paper, ngerman, 12pt]{scrreprt}
 
-\usepackage[backend=bibtex,style=alphabetic]{biblatex}
+\input{options/packages.tex}
+
+\DeclareDelimFormat{nameyeardelim}{\addcomma\space}
+\providecommand{\apashortdash}{-}
+
+\input{options/code.tex}
+
 \addbibresource{bibliography.bib}
 
 
