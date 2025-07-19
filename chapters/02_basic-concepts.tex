@@ -1,0 +1,35 @@
+In order to protect data holistically, it is considered in three states, each of which requires different security measures:
+
+\textbf{Data at rest} refers to data that is stored on storage media such as hard disks or SSDs, e.g. in databases or file systems. This data can be secured by encryption at storage level (e.g. LUKS, KMS-integrated volumes).
+
+\textbf{Data in transit} includes data that is transferred via networks, for example between microservices, between cloud providers or when accessed by users. Protocols such as TLS or encrypted network topologies (e.g. VPNs, WireGuard) are used here.
+
+\textbf{Data in use} refers to data that is currently being processed in a process or stored in memory. This is traditionally the least protected state, as data must be decrypted in order to be used. This is where Confidential Computing comes in by protecting processing within Trusted Execution Environments (TEEs).
+
+\section{Kuberetes basics}
+
+Kubernetes is an open source platform for orchestrating containerized applications. It enables the automated deployment, scaling and management of applications across clusters. Central concepts are:
+
+
+\begin{itemize}
+\item \textpf{Pods}: The smallest deployable unit, consisting of one or more containers.
+\item \textbf{Nodes}: Physical or virtual machines on which pods run.
+\item \textbf{Deployments and StatefulStats}: Mechanisms for managing the lifecycle of applications.
+\item \textbf{Services}: Abstractions for load balancing and communication between components.
+\item \textbf{ConfigMaps and Secrets}: Mechanisms for managing configuration data and sensitive information.
+\item \textbf{Persistent Volumes (PV) and Storage Classes}: Management of external storage solutions for stateful applications such as databases.
+\end{itemize}
+
+For this project, Kubernetes is used as a platform-independent framework to build a geo-distributed, multi-cloud database infrastructure that integrates aspects such as network encryption, storage security and CPU isolation.
+
+\section{Introduction to Confidential Computing}
+
+Confidential Computing beschreibt den Ansatz, sensible Daten während der Verarbeitung zu schützen. Dies wird durch den Einsatz spezieller Hardwarefunktionen realisiert, etwa durch:
+
+\begin{itemize}
+  \item Intel TDX
+  \item AMD SEV
+  \item ARM TrustZone
+\end{itemize}
+
+Cloud providers such as Microsoft Azure, Google Cloud and AWS now offer so-called confidential virtual machines (cVMs) that use these technologies. A Trusted Execution Environment (TEE) is provided within these VMs, which itself protects against access by the hypervisor, the operating system or administrators. In combination with remote attestation, such environments can be verifiably verified as trustworthy - an important prerequisite for security requirements in regulated industries such as healthcare or finance.
