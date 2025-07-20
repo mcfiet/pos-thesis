@@ -1,11 +1,13 @@
 \section{Confidential VMs in Google Cloud}
 
+The setup described below is available in a GitHub repository, which can be accessed here: \texttt{shadowkube} \url{https://github.com/mcfiet/shadowkube}. In this repository, everything can be reproduced using our automated installation and testing scripts. Detailed instructions for setting up the environment can be found in the \texttt{README}.
+
 Based on the concepts explained above - in particular the protection of sensitive data during processing (data-in-use) - three Confidential Virtual Machines (cVMs) were set up on the Google Cloud Platform (GCP) as part of this project. Together, these VMs form a geo-redundant Kubernetes cluster distributed across three global regions:
 
 \begin{itemize}
   \item USA (us-central1-f)
-  \item Europa (europe-north1-a)
-  \item Asien (asia-east1-c)
+  \item Europe (europe-north1-a)
+  \item Asia (asia-east1-c)
 \end{itemize}
 
 All instances are based on the AMD Milan CPU platform and are configured with the enableConfidentialCompute: true option. This enables the use of AMD SEV-SNP (Secure Encrypted Virtualization - Secure Nested Paging) - a modern confidential computing technology that combines hardware-supported memory encryption and integrity checking.
@@ -21,11 +23,12 @@ Die drei VMs weisen jeweils folgende zentrale Eigenschaften auf:
 \item \textbf{Hard disk type}: 50 GB NVMe-based, persistent (non-volatile)  
 \item \textbf{UEFI-compatible boot}, enabled for modern security features
 \item \textbf{Integrity Monitoring \& vTPM enabled} to detect tampering with the VM operating system
+\item \textbf{Secure Boot} enabled to ensure only trusted bootloaders and operating system components are loaded and no changes to the kernel were made between reboots of the system.
 \end{itemize}
 
 \subsection{Regional Distribution of VMs}
 
-This infrastructure leverages both confidential and non-confidential virtual machines (VMs), distributed across multiple geographic regions, to form two separate Kubernetes clusters—one using Confidential VMs and the other using Non-Confidential VMs. Within each cluster, the VM with the suffix \texttt{-1} serves as the master node, while the others function as worker nodes.
+This infrastructure leverages both confidential and non-confidential virtual machines (VMs), distributed across multiple geographic regions, to form two separate Kubernetes clusters, one using Confidential VMs and the other using Non-Confidential VMs. Within each cluster, the VM with the suffix \texttt{-1} serves as the master node, while the others function as worker nodes.
 
 \begin{longtable}{@{}llllll@{}}
 \toprule
@@ -40,33 +43,32 @@ pos-sec-3    & asia-east1     & 35.201.135.139   & Worker & Confidential \\
 \bottomrule
 \end{longtable}
 
-The VMs named with the suffix \texttt{-1} act as the master nodes of their respective clusters. All others (with suffix \texttt{-2} and \texttt{-3}) serve as worker nodes.
-
-Both clusters use Calico as the networking plugin in combination with a WireGuard-based VPN mesh to ensure secure and encrypted communication between the regions. These overlay networks provide a secure and multi-tenant networking layer within the clusters.
-
-For persistent storage, OpenEBS is used as the CSI (Container Storage Interface) driver, as RKE (Rancher Kubernetes Engine) does not provide a default local CSI driver. Only the Confidential VMs are configured with encrypted local volumes, which are provisioned via OpenEBS and mounted into Kubernetes.
-
-This combination of Confidential VM execution environments, secure VPN mesh networking, encrypted storage (on Confidential nodes), and Kubernetes orchestration forms the foundation for running the distributed CloudNativePG database and associated benchmarking workloads.
-
 \subsection{Software stack and architecture decisions}
 
 \subsubsection{Operating system and Kubernetes distribution}
 
 For the Confidential Computing environment, openSUSE Leap 15.6 was chosen because it offers up-to-date AMD SEV support in the kernel and, as an enterprise distribution, guarantees long-term stability \parencite{amd_sev_2024}. The distribution enables hardware-based attestation of confidential VMs and offers consistent availability across different cloud providers.
 
-RKE2 was implemented as a Kubernetes distribution, a security-focused distribution with Secrets encryption enabled by default and Pod Security Standards \parencite{rke2_docs_2025, kubernetes_security_2025}. RKE2 is particularly suitable for multi-cloud deployments as it can be installed independently of the provider and ensures consistent security policies across different cloud providers \parencite{cncf_security_2024}.
-
-\subsubsection{Database infrastructure with CloudNativePG}
-
-PostgreSQL is managed via the CloudNativePG (CNPG) operator, which offers native Kubernetes integration \parencite{cnpg_docs_2025}. CNPG enables automatic high availability through streaming replication and integrated TLS encryption of all database connections. Performance evaluation is carried out with pgbench, which implements the TPC-B standard and tests various workload patterns (read-only, write-heavy, mixed) and concurrency levels (1-50 clients) \parencite{pgbench_docs_2024, tpc_b_2024, postgresql_17_2024}.
-
-\subsubsection{Storage encryption and zero-trust networking}
-
-The storage encryption is based on LUKS with dm-crypt at kernel level \parencite{fruhwirth_luks_2005, luks2_spec_2024}. All sensitive data - including Kubernetes configurations, container images and persistent volumes - is stored in an encrypted loop device that is automatically unlocked using a key file. In addition, OpenEBS has been implemented as a container-native storage solution \parencite{openebs_docs_2025}.
-
-The network follows zero trust principles through WireGuard mesh between all cluster nodes \parencite{nist_zero_trust_2020}. WireGuard was chosen due to its minimal code base (~4,000 lines) and modern cryptography (Curve25519, ChaCha20) \parencite{donenfeld_wireguard_2017, wireguard_protocol_2024}. All inter-node communication runs via encrypted VPN tunnels with automatic peer discovery via Vault.
+RKE2 was implemented as a Kubernetes distribution, a security-focused distribution with Secrets encryption enabled by default and Pod Security Standards \parencite{rke2_docs_2025, kubernetes_security_2025}. RKE2 is particularly suitable for multi-cloud deployments as it can be installed independently of the provider and provides workload portability and consistent Kubernetes behavior across different environments through CNCF certification \parencite{rancher_government_2024, cncf_2024}.
 
 \subsubsection{Secrets management and attestation}
 
 HashiCorp Vault serves as a centralized secrets management with hardware-based attestation of confidential VMs. The setup uses vhsm.enclaive.cloud, a specialized Virtual Hardware Security Module (vHSM) implementation explicitly designed for Confidential Computing environments \parencite{enclaive_vhsm_2025}.
+
 The attestation is carried out by proving the AMD SEV identity of the confidential VMs, whereby hardware-specific measurements and platform certificates are validated \parencite{kaplan_amd_encryption_2016, confidential_computing_consortium_2024}. Only after successful verification of VM integrity does Vault release the required encryption keys for LUKS storage, WireGuard VPN and Kubernetes secrets. This attestation ensures that only verified cVMs have access to sensitive cluster secrets and thus follows the zero-trust principle at infrastructure level too.
+
+\subsubsection{Storage encryption and zero-trust networking}
+
+The storage encryption is based on LUKS with dm-crypt at kernel level \parencite{fruhwirth_luks_2005, luks2_spec_2024}. All sensitive data - including Kubernetes configurations, container images and persistent volumes - is stored in an encrypted loop device that is automatically unlocked using a key file. 
+
+For persistent storage, OpenEBS is used as the CSI (Container Storage Interface) driver, as RKE (Rancher Kubernetes Engine) does not provide a default local CSI driver. Only the Confidential VMs are configured with encrypted local volumes, which are provisioned via OpenEBS and mounted into Kubernetes \parencite{openebs_docs_2025}.
+
+The network follows zero trust principles through WireGuard mesh between all cluster nodes \parencite{nist_zero_trust_2020}. WireGuard was chosen due to its minimal code base (~4,000 lines) and modern cryptography (Curve25519, ChaCha20) \parencite{donenfeld_wireguard_2017, wireguard_protocol_2024}. All inter-node communication runs via encrypted VPN tunnels with automatic peer discovery via Vault.
+
+Both clusters use Calico as the networking plugin in combination with a WireGuard-based VPN mesh to ensure secure and encrypted communication between the regions. These overlay networks provide a secure and multi-tenant networking layer within the clusters.
+
+This combination of Confidential VM execution environments, secure VPN mesh networking, encrypted storage (on Confidential nodes), and Kubernetes orchestration forms the foundation for running the distributed CloudNativePG database and associated benchmarking workloads.
+
+\subsubsection{Database infrastructure with CloudNativePG}
+
+PostgreSQL is managed via the CloudNativePG (CNPG) operator, which offers native Kubernetes integration \parencite{cnpg_docs_2025}. CNPG enables automatic high availability through streaming replication and integrated TLS encryption of all database connections. Performance evaluation is carried out with pgbench, which implements the TPC-B standard and tests various workload patterns (read-only, write-heavy, mixed) and concurrency levels (1-50 clients) \parencite{pgbench_docs_2024, tpc_b_2024, postgresql_17_2024}.
