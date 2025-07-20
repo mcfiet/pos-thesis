@@ -10,26 +10,25 @@ In order to protect data holistically, it is considered in three states, each of
 
 Kubernetes is an open source platform for orchestrating containerized applications. It enables the automated deployment, scaling and management of applications across clusters. Central concepts are:
 
-
 \begin{itemize}
-\item \textpf{Pods}: The smallest deployable unit, consisting of one or more containers.
+\item \textbf{Pods}: The smallest deployable unit, consisting of one or more containers.
 \item \textbf{Nodes}: Physical or virtual machines on which pods run.
 \item \textbf{Deployments and StatefulStats}: Mechanisms for managing the lifecycle of applications.
 \item \textbf{Services}: Abstractions for load balancing and communication between components.
 \item \textbf{ConfigMaps and Secrets}: Mechanisms for managing configuration data and sensitive information.
 \item \textbf{Persistent Volumes (PV) and Storage Classes}: Management of external storage solutions for stateful applications such as databases.
+\item \textbf{CNI (Container Network Interface)}: Plugin-based architecture for configuring network interfaces in Linux containers, enabling pod-to-pod communication across the cluster.
+\item \textbf{CSI (Container Storage Interface)}: Standardized interface for storage vendors to develop plugins that work across different container orchestration systems, enabling dynamic provisioning and management of storage volumes.
 \end{itemize}
 
 For this project, Kubernetes is used as a platform-independent framework to build a geo-distributed, multi-cloud database infrastructure that integrates aspects such as network encryption, storage security and CPU isolation.
 
-\section{Introduction to Confidential Computing}
+\subsection{Introduction to Confidential Computing}
 
-Confidential Computing beschreibt den Ansatz, sensible Daten während der Verarbeitung zu schützen. Dies wird durch den Einsatz spezieller Hardwarefunktionen realisiert, etwa durch:
+Confidential Computing describes the approach of protecting sensitive data during processing (data-in-use) through specialized hardware functions that create Trusted Execution Environments (TEEs) at the processor level. The primary technologies include Intel TDX and SGX, AMD SEV variants, and ARM TrustZone \parencite{confidential_computing_consortium_2024}.
 
-\begin{itemize}
-  \item Intel TDX
-  \item AMD SEV
-  \item ARM TrustZone
-\end{itemize}
+This project specifically utilizes AMD SEV-SNP (Secure Encrypted Virtualization - Secure Nested Paging) technology. AMD SEV operates through a dedicated secure processor that manages memory encryption independently of the main CPU cores \parencite{amd_sev_2024, kaplan_amd_encryption_2016}. Each virtual machine receives a unique encryption key, ensuring that memory pages are encrypted with VM-specific keys managed entirely within the secure processor, making them inaccessible to the hypervisor.
 
-Cloud providers such as Microsoft Azure, Google Cloud and AWS now offer so-called confidential virtual machines (cVMs) that use these technologies. A Trusted Execution Environment (TEE) is provided within these VMs, which itself protects against access by the hypervisor, the operating system or administrators. In combination with remote attestation, such environments can be verifiably verified as trustworthy - an important prerequisite for security requirements in regulated industries such as healthcare or finance.
+Major cloud providers now offer confidential virtual machines (cVMs) that leverage these hardware technologies to provide TEEs protecting against unauthorized access by the hypervisor, operating system, or cloud administrators. In combination with remote attestation mechanisms, these environments can be cryptographically verified as trustworthy before sensitive data is processed. The attestation process involves hardware measurement of the VM's initial state, generation of signed attestation reports, external verification against known good values, and only then provisioning of secrets and sensitive data to verified VMs.
+
+This capability is particularly important for security requirements in regulated industries such as healthcare, finance, and government, where data protection regulations mandate strong controls over data processing environments \parencite{confidential_computing_consortium_2024}.
