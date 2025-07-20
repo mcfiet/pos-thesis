@@ -1,0 +1,328 @@
+\chapter{Benchmark Results Summary - pos-no-sec-1 (Regular VM)}
+
+\section{Overview}
+\begin{itemize}
+    \item \textbf{Node}: pos-no-sec-1 (Regular VM)
+    \item \textbf{CPU}: AMD EPYC 7B13 (2 cores)
+    \item \textbf{Memory}: 7.0GB
+    \item \textbf{Number of Test Runs}: 10
+    \item \textbf{Test Date}: July 19, 2025
+\end{itemize}
+
+\section{PostgreSQL Database Benchmarks (CNPG)}
+
+\subsection{Single Client Test (1 Client, 20s)}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Latency (ms)} & \textbf{TPS} \\
+\hline
+1 & 1.798 & 556.06 \\
+2 & 1.826 & 547.54 \\
+3 & 1.889 & 529.19 \\
+4 & 2.233 & 447.57 \\
+5 & 2.011 & 497.01 \\
+6 & 2.216 & 451.02 \\
+7 & 2.178 & 459.00 \\
+8 & 2.151 & 464.74 \\
+9 & 2.174 & 459.88 \\
+\hline
+\textbf{Mean} & \textbf{1.942} & \textbf{490.22} \\
+\textbf{Std. Deviation} & 0.182 & 42.29 \\
+\hline
+\end{tabular}
+\caption{Single Client Test Results}
+\end{table}
+
+\subsection{5 Clients Test (20s)}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Latency (ms)} & \textbf{TPS} \\
+\hline
+1 & 4.441 & 1121.13 \\
+2 & 4.366 & 1140.70 \\
+3 & 4.607 & 1081.20 \\
+4 & 4.716 & 1056.54 \\
+5 & 4.979 & 1000.75 \\
+6 & 4.553 & 1094.31 \\
+7 & 4.583 & 1087.44 \\
+8 & 4.536 & 1098.47 \\
+9 & 4.604 & 1082.19 \\
+\hline
+\textbf{Mean} & \textbf{4.598} & \textbf{1084.75} \\
+\textbf{Std. Deviation} & 0.177 & 45.09 \\
+\hline
+\end{tabular}
+\caption{5 Clients Test Results}
+\end{table}
+
+\subsection{10 Clients Test (20s)}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Latency (ms)} & \textbf{TPS} \\
+\hline
+1 & 8.308 & 1200.68 \\
+2 & 8.135 & 1226.28 \\
+3 & 8.503 & 1173.23 \\
+4 & 8.335 & 1197.21 \\
+5 & 9.169 & 1088.04 \\
+6 & 8.442 & 1181.84 \\
+7 & 8.192 & 1217.82 \\
+8 & 8.351 & 1194.78 \\
+9 & 8.403 & 1187.10 \\
+\hline
+\textbf{Mean} & \textbf{8.427} & \textbf{1185.22} \\
+\textbf{Std. Deviation} & 0.359 & 42.78 \\
+\hline
+\end{tabular}
+\caption{10 Clients Test Results}
+\end{table}
+
+\subsection{Read-Only Test (20s)}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Latency (ms)} & \textbf{TPS} \\
+\hline
+1 & 0.796 & 12179.30 \\
+2 & 0.789 & 12309.79 \\
+3 & 0.803 & 12092.05 \\
+4 & 0.810 & 11981.56 \\
+5 & 0.854 & 11371.53 \\
+6 & 0.813 & 11892.78 \\
+7 & 0.807 & 11988.54 \\
+8 & 0.825 & 11752.51 \\
+9 & 0.805 & 12044.63 \\
+\hline
+\textbf{Mean} & \textbf{0.811} & \textbf{11956.97} \\
+\textbf{Std. Deviation} & 0.021 & 289.31 \\
+\hline
+\end{tabular}
+\caption{Read-Only Test Results}
+\end{table}
+
+\subsection{High Concurrency: 25 Clients (60s)}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Latency (ms)} & \textbf{TPS} \\
+\hline
+1 & 18.808 & 1326.68 \\
+2 & 18.626 & 1340.41 \\
+3 & 19.115 & 1306.10 \\
+4 & 20.105 & 1241.87 \\
+5 & 23.122 & 1079.56 \\
+6 & 19.977 & 1249.63 \\
+7 & 20.192 & 1236.43 \\
+8 & 20.090 & 1242.32 \\
+9 & 19.527 & 1278.57 \\
+\hline
+\textbf{Mean} & \textbf{19.951} & \textbf{1255.73} \\
+\textbf{Std. Deviation} & 1.408 & 82.17 \\
+\hline
+\end{tabular}
+\caption{High Concurrency: 25 Clients Test Results}
+\end{table}
+
+\subsection{High Concurrency: 50 Clients (60s)}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Latency (ms)} & \textbf{TPS} \\
+\hline
+1 & 37.159 & 1342.17 \\
+2 & 37.009 & 1348.29 \\
+3 & 38.661 & 1290.30 \\
+4 & 41.064 & 1215.59 \\
+5 & 46.314 & 1076.48 \\
+6 & 40.784 & 1223.55 \\
+7 & 40.667 & 1227.72 \\
+8 & 40.794 & 1222.94 \\
+9 & 39.802 & 1254.46 \\
+\hline
+\textbf{Mean} & \textbf{40.250} & \textbf{1244.61} \\
+\textbf{Std. Deviation} & 2.946 & 86.33 \\
+\hline
+\end{tabular}
+\caption{High Concurrency: 50 Clients Test Results}
+\end{table}
+
+\subsection{Sustained Load: 10 Clients (300s)}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Latency (ms)} & \textbf{TPS} \\
+\hline
+1 & 8.081 & 1234.71 \\
+2 & 8.114 & 1229.90 \\
+3 & 8.038 & 1241.42 \\
+4 & 8.226 & 1213.13 \\
+5 & 9.186 & 1086.43 \\
+6 & 8.271 & 1206.46 \\
+7 & 8.228 & 1212.81 \\
+8 & 8.342 & 1196.39 \\
+9 & 8.165 & 1222.09 \\
+\hline
+\textbf{Mean} & \textbf{8.295} & \textbf{1204.82} \\
+\textbf{Std. Deviation} & 0.400 & 50.16 \\
+\hline
+\end{tabular}
+\caption{Sustained Load: 10 Clients Test Results}
+\end{table}
+
+\section{CPU \& Memory Benchmarks}
+
+\subsection{CPU Performance}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|p{3cm}|p{3cm}|p{3cm}|}
+\hline
+\textbf{Run} & \textbf{Prime Calc\newline(events/sec)} & \textbf{Intensive\newline(events/sec)} & \textbf{Avg Latency\newline(ms)} \\
+\hline
+1 & 1501.36 & 3914.42 & 1.33 \\
+2 & 1507.68 & 3918.84 & 1.33 \\
+3 & 1501.37 & 3917.36 & 1.33 \\
+4 & 1504.72 & 3904.31 & 1.33 \\
+5 & 1499.53 & 3882.77 & 1.33 \\
+6 & 1503.32 & 3924.50 & 1.33 \\
+7 & 1503.56 & 3909.78 & 1.33 \\
+8 & 1504.25 & 3920.61 & 1.33 \\
+9 & 1505.84 & 3922.07 & 1.33 \\
+\hline
+\textbf{Mean} & \textbf{1503.51} & \textbf{3912.74} & \textbf{1.330} \\
+\textbf{Std. Deviation} & 2.60 & 15.24 & 0.000 \\
+\hline
+\end{tabular}
+\caption{CPU Performance Test Results}
+\end{table}
+
+\subsection{Memory Performance}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Write (MB/s)} & \textbf{Read (MB/s)} & \textbf{Random (MB/s)} \\
+\hline
+1 & 7804.67 & 10875.76 & 2404.44 \\
+2 & 7965.40 & 10508.93 & 2691.96 \\
+3 & 7927.14 & 10861.00 & 2653.85 \\
+4 & 7382.77 & 9550.91 & 2651.58 \\
+5 & 7398.22 & 9817.20 & 2754.86 \\
+6 & 7983.23 & 9978.94 & 1905.27 \\
+7 & 6904.10 & 9532.33 & 2745.26 \\
+8 & 7788.88 & 9630.72 & 2707.06 \\
+9 & 7039.55 & 8166.45 & 2452.27 \\
+\hline
+\textbf{Mean} & \textbf{7577.11} & \textbf{9880.25} & \textbf{2551.84} \\
+\textbf{Std. Deviation} & 381.07 & 848.76 & 299.96 \\
+\hline
+\end{tabular}
+\caption{Memory Performance Test Results}
+\end{table}
+
+\subsection{File I/O Performance}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Reads/sec} & \textbf{Writes/sec} & \textbf{Latency (ms)} \\
+\hline
+1 & 400.69 & 267.13 & 1.31 \\
+2 & 411.35 & 274.23 & 1.28 \\
+3 & 404.13 & 269.42 & 1.30 \\
+4 & 402.43 & 268.29 & 1.30 \\
+5 & 402.54 & 268.36 & 1.31 \\
+6 & 404.38 & 269.59 & 1.30 \\
+7 & 407.84 & 271.89 & 1.29 \\
+8 & 401.35 & 267.57 & 1.31 \\
+9 & 400.01 & 266.67 & 1.31 \\
+\hline
+\textbf{Mean} & \textbf{403.86} & \textbf{269.24} & \textbf{1.301} \\
+\textbf{Std. Deviation} & 3.79 & 2.54 & 0.010 \\
+\hline
+\end{tabular}
+\caption{File I/O Performance Test Results}
+\end{table}
+
+\section{Network Performance}
+
+\subsection{Cluster Node Latency}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Node 1 (ms)} & \textbf{Node 2 (ms)} & \textbf{Node 3 (ms)} \\
+\hline
+1 & 0.035 & 125.243 & 157.066 \\
+2 & 0.039 & 125.984 & 157.015 \\
+3 & 0.035 & 125.362 & 156.937 \\
+4 & 0.038 & 125.501 & 156.885 \\
+5 & 0.034 & 125.275 & 156.853 \\
+6 & 0.033 & 125.374 & 156.990 \\
+7 & 0.047 & 125.282 & 156.920 \\
+8 & 0.057 & 124.322 & 157.237 \\
+9 & 0.042 & 124.248 & 157.032 \\
+\hline
+\textbf{Mean} & \textbf{0.040} & \textbf{125.177} & \textbf{156.993} \\
+\textbf{Std. Deviation} & 0.008 & 0.592 & 0.125 \\
+\hline
+\end{tabular}
+\caption{Cluster Node Latency Test Results}
+\end{table}
+
+\subsection{External Connectivity}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Run} & \textbf{Google DNS (ms)} & \textbf{Cloudflare (ms)} & \textbf{Quad9 (ms)} \\
+\hline
+1 & 0.498 & 10.357 & 10.863 \\
+2 & 0.744 & 10.544 & 10.663 \\
+3 & 0.508 & 10.445 & 10.540 \\
+4 & 0.583 & 10.398 & 10.849 \\
+5 & 0.505 & 10.484 & 11.456 \\
+6 & 0.630 & 10.476 & 11.086 \\
+7 & 0.549 & 10.531 & 10.376 \\
+8 & 0.539 & 10.551 & 11.518 \\
+9 & 0.488 & 10.431 & 10.840 \\
+\hline
+\textbf{Mean} & \textbf{0.560} & \textbf{10.468} & \textbf{10.910} \\
+\textbf{Std. Deviation} & 0.080 & 0.072 & 0.427 \\
+\hline
+\end{tabular}
+\caption{External Connectivity Test Results}
+\end{table}
+
+\subsection{Download Bandwidth}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Run} & \textbf{Bandwidth (Mbps)} \\
+\hline
+1 & 276.74 \\
+2 & 274.63 \\
+3 & 267.84 \\
+4 & 275.62 \\
+5 & 275.14 \\
+6 & 277.62 \\
+7 & 275.21 \\
+8 & 273.01 \\
+9 & 267.63 \\
+\hline
+\textbf{Mean} & \textbf{273.72} \\
+\textbf{Std. Deviation} & 3.61 \\
+\hline
+\end{tabular}
+\caption{Download Bandwidth Test Results}
+\end{table}
